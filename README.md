@@ -45,3 +45,9 @@ https://getbootstrap.com/docs/4.0/getting-started/introduction/
 
 Enzyme shallow wrapper .prop() method
 http://airbnb.io/enzyme/docs/api/ShallowWrapper/prop.html
+
+Runtime type checking for React props and similar objects
+https://github.com/facebook/prop-types
+
+checkPropTypes (get the error returned to us rather than thrown as a warning)
+https://www.npmjs.com/package/check-prop-types

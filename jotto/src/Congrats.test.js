@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-
+// import checkPropTypes from 'check-prop-types';
 import { findByTestAttr, checkProps } from '../test/testUtils';
 import Congrats from './Congrats';
 
@@ -34,5 +34,7 @@ test('renders non-empty congrats message when `success` prop is true', () => {
 });
 test('does not throw warning with expected props', () => {
   const expectedProps = { success: false };
+  // const propError = checkPropTypes(Congrats.propTypes, expectedProps, 'prop', Congrats.name);
+  // expect(propError).toBeUndefined(); // undefined when there's no error
   checkProps(Congrats, expectedProps);
 });

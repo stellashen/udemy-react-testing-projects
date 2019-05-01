@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "ajv": "^6.4.0",
+    "babel-eslint": "^10.0.1",
     "check-prop-types": "^1.1.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
