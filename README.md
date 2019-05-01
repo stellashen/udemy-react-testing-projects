@@ -50,7 +50,43 @@ http://airbnb.io/enzyme/docs/api/ShallowWrapper/prop.html
 ## My Notes
 
 1. check React props
-   Example in jotto/Congrats.test.js:
+- testUtils.js
+```js
+export const checkProps = (component, conformingProps) => {
+  const propError = checkPropTypes(
+    component.propTypes,
+    conformingProps,
+    'prop',
+    component.name);
+  expect(propError).toBeUndefined();
+}
+```
+-   Example in jotto/Congrats.test.js
+```js
+test('does not throw warning with expected props', () => {
+  const expectedProps = { success: false };
+  checkProps(Congrats, expectedProps);
+});
+```
+-   put props types in Congrats.js component:
+
+```js
+Congrats.propTypes = {
+  success: PropTypes.bool.isRequired,
+};
+```
+
+for array:
+```js
+GuessedWords.propTypes = {
+  guessedWords: PropTypes.arrayOf(
+    PropTypes.shape({
+      guessedWord: PropTypes.string.isRequired,
+      letterMatchCount: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
+```
 
 Runtime type checking for React props and similar objects
 https://github.com/facebook/prop-types
@@ -63,7 +99,7 @@ https://www.npmjs.com/package/check-prop-types
 
 If you are not using create-react-app, you need to add the file path to jest.config.js:
 
-```
+```js
 module.exports = {
   setupTestFrameworkScriptFile: '<rootDir>/test/setupTests.js',
   moduleNameMapper: ...
@@ -71,4 +107,24 @@ module.exports = {
 ```
 
 3. Abstractions
-   put findByTestAttr(), checkProps() in '/test/testUtils' so we can reuse them in different test files
+
+-   put findByTestAttr(), checkProps() in '/test/testUtils' so we can reuse them in different test files
+-   Factory function setup() in each test file
+
+4. reuse `wrapper` and use `beforeEach`
+```js
+describe('if there are no words guessed', () => {
+  let wrapper;
+  beforeEach(() => {
+    wrapper = setup({ guessedWords: [] });
+  });
+  test('renders without error', () => {
+    const component = findByTestAttr(wrapper, 'component-guessed-words');
+    expect(component.length).toBe(1);
+  });
+  test('renders instructions to guess a word', () => {
+    const instructions = findByTestAttr(wrapper, 'guess-instructions');
+    expect(instructions.text().length).not.toBe(0);
+  });
+});
+```

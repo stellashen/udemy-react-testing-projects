@@ -23,7 +23,7 @@ test('does not throw warning with expected props', () => {
 });
 
 describe('if there are no words guessed', () => {
-  let wrapper
+  let wrapper;
   beforeEach(() => {
     wrapper = setup({ guessedWords: [] });
   });
