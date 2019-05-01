@@ -13,8 +13,9 @@ const defaultProps = { success: false };
 * @returns {ShallowWrapper}
 */
 const setup = (props={}) => {
+  //overwrite the default props if there are props passed in
   const setupProps = { ...defaultProps, ...props };
-  return shallow(<Congrats {...setupProps} />)
+  return shallow(<Congrats {...setupProps} />);
 }
 
 test('renders without error', () => {

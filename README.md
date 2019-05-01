@@ -1,13 +1,14 @@
 # udemy-react-testing-projects
+
 Code for projects presented in Udemy "React Testing with Jest and Enzyme" course
 
 ## Project READMEs
-See individual project READMEs (in their directories) for more information. 
 
-  * [Click Counter](https://github.com/flyrightsister/udemy-react-testing-projects/blob/master/click-counter/README.md)
-  * [Jotto](https://github.com/flyrightsister/udemy-react-testing-projects/blob/master/jotto/README.md)
-  * [Random Word Server](https://github.com/flyrightsister/udemy-react-testing-projects/blob/master/random-word-server/README.md)
+See individual project READMEs (in their directories) for more information.
 
+-   [Click Counter](https://github.com/flyrightsister/udemy-react-testing-projects/blob/master/click-counter/README.md)
+-   [Jotto](https://github.com/flyrightsister/udemy-react-testing-projects/blob/master/jotto/README.md)
+-   [Random Word Server](https://github.com/flyrightsister/udemy-react-testing-projects/blob/master/random-word-server/README.md)
 
 ## Course Resources: React Testing with Jest and Enzyme
 
@@ -46,8 +47,28 @@ https://getbootstrap.com/docs/4.0/getting-started/introduction/
 Enzyme shallow wrapper .prop() method
 http://airbnb.io/enzyme/docs/api/ShallowWrapper/prop.html
 
+## My Notes
+
+1. check React props
+   Example in jotto/Congrats.test.js:
+
 Runtime type checking for React props and similar objects
 https://github.com/facebook/prop-types
 
 checkPropTypes (get the error returned to us rather than thrown as a warning)
 https://www.npmjs.com/package/check-prop-types
+
+2. configure Enzyme in setupTests.js
+   create-react-app is looking for setupTests.js, and if it finds it, it will run this before every test
+
+If you are not using create-react-app, you need to add the file path to jest.config.js:
+
+```
+module.exports = {
+  setupTestFrameworkScriptFile: '<rootDir>/test/setupTests.js',
+  moduleNameMapper: ...
+}
+```
+
+3. Abstractions
+   put findByTestAttr(), checkProps() in '/test/testUtils' so we can reuse them in different test files
