@@ -50,41 +50,48 @@ http://airbnb.io/enzyme/docs/api/ShallowWrapper/prop.html
 ## My Notes
 
 1. check React props
-- testUtils.js
+
+-   testUtils.js
+
 ```js
 export const checkProps = (component, conformingProps) => {
-  const propError = checkPropTypes(
-    component.propTypes,
-    conformingProps,
-    'prop',
-    component.name);
-  expect(propError).toBeUndefined();
-}
+	const propError = checkPropTypes(
+		component.propTypes,
+		conformingProps,
+		'prop',
+		component.name
+	);
+	expect(propError).toBeUndefined();
+};
 ```
+
 -   Example in jotto/Congrats.test.js
+
 ```js
 test('does not throw warning with expected props', () => {
-  const expectedProps = { success: false };
-  checkProps(Congrats, expectedProps);
+	const expectedProps = { success: false };
+	checkProps(Congrats, expectedProps);
 });
 ```
+
 -   put props types in Congrats.js component:
 
 ```js
 Congrats.propTypes = {
-  success: PropTypes.bool.isRequired,
+	success: PropTypes.bool.isRequired
 };
 ```
 
 for array:
+
 ```js
 GuessedWords.propTypes = {
-  guessedWords: PropTypes.arrayOf(
-    PropTypes.shape({
-      guessedWord: PropTypes.string.isRequired,
-      letterMatchCount: PropTypes.number.isRequired,
-    })
-  ).isRequired,
+	guessedWords: PropTypes.arrayOf(
+		PropTypes.shape({
+			guessedWord: PropTypes.string.isRequired,
+			letterMatchCount: PropTypes.number.isRequired
+		})
+	).isRequired
 };
 ```
 
@@ -108,23 +115,92 @@ module.exports = {
 
 3. Abstractions
 
--   put findByTestAttr(), checkProps() in '/test/testUtils' so we can reuse them in different test files
+-   put storeFactory(), findByTestAttr(), checkProps() in '/test/testUtils' so we can reuse them in different test files
 -   Factory function setup() in each test file
+-   storeFactory() creates a store for testing that uses the reducers from the actual app.
 
 4. reuse `wrapper` and use `beforeEach`
+
 ```js
 describe('if there are no words guessed', () => {
-  let wrapper;
-  beforeEach(() => {
-    wrapper = setup({ guessedWords: [] });
-  });
-  test('renders without error', () => {
-    const component = findByTestAttr(wrapper, 'component-guessed-words');
-    expect(component.length).toBe(1);
-  });
-  test('renders instructions to guess a word', () => {
-    const instructions = findByTestAttr(wrapper, 'guess-instructions');
-    expect(instructions.text().length).not.toBe(0);
-  });
+	let wrapper;
+	beforeEach(() => {
+		wrapper = setup({ guessedWords: [] });
+	});
+	test('renders without error', () => {
+		const component = findByTestAttr(wrapper, 'component-guessed-words');
+		expect(component.length).toBe(1);
+	});
+	test('renders instructions to guess a word', () => {
+		const instructions = findByTestAttr(wrapper, 'guess-instructions');
+		expect(instructions.text().length).not.toBe(0);
+	});
 });
+```
+
+5. expect(obj1).toEqual(obj2)
+
+-   it's a deep equal and compares content
+-   toBe compares `===`, so we should use toBe to compare immutable data types and use toEqual to compare mutable data types
+
+6. test reducer
+   example: jotto/src/reducers/successReducer.test.js
+
+```js
+import { actionTypes } from '../actions';
+import successReducer from './successReducer';
+
+test('returns default initial state of `false` when no action is passed', () => {
+	const newState = successReducer(undefined, {});
+	expect(newState).toBe(false);
+});
+test('returns state of true upon receiving an action of type `CORRECT_GUESS`', () => {
+	const newState = successReducer(undefined, {
+		type: actionTypes.CORRECT_GUESS
+	});
+	expect(newState).toBe(true);
+});
+```
+
+7. dive()
+
+-   `shallow` doesn't show what's inside Input component
+-   `dive()` is going to show us the contents of the Input component itself
+
+```js
+const wrapper = shallow(<Input store={store} />).dive();
+```
+
+8. Thunk test
+
+    We are testing actions and reducer, so it's in `integration.test.js`
+
+9. use `moxios` to test without running the server
+
+routes axios calls to moxios instead of http
+
+10. test redux props
+
+    example: Input.test.js
+
+11. use `ref` to change input box value
+
+in component file:
+```js
+  constructor(props) {
+    super(props);
+
+    this.inputBox = React.createRef();
+  }
+```
+```js
+	<input
+		data-test="input-box"
+		ref={this.inputBox} />
+```
+
+in test file:
+
+```js
+wrapper.instance().inputBox.current = { value: guessedWord };
 ```

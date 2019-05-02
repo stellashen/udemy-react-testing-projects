@@ -12,9 +12,9 @@ import { middlewares } from '../src/configureStore';
  * @returns {Store} - Redux store.
  */
 export const storeFactory = (initialState) => {
-  const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore)
+  const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
   return createStoreWithMiddleware(rootReducer, initialState);
-}
+};
 
 /**
  * Return node(s) with the given data-test attribute.
@@ -24,7 +24,7 @@ export const storeFactory = (initialState) => {
  */
 export const findByTestAttr = (wrapper, val) => {
   return wrapper.find(`[data-test="${val}"]`);
-}
+};
 
 export const checkProps = (component, conformingProps) => {
   const propError = checkPropTypes(
@@ -33,4 +33,4 @@ export const checkProps = (component, conformingProps) => {
     'prop',
     component.name);
   expect(propError).toBeUndefined();
-}
+};

@@ -14,7 +14,7 @@ const setup = (initialState={}) => {
   const store = storeFactory(initialState);
   const wrapper = shallow(<Input store={store} />).dive();
   return wrapper;
-}
+};
 
 describe('render', () => {
   describe('word has not been guessed', () => {
@@ -99,6 +99,6 @@ describe('`guessWord` action creator', () => {
   });
   test('input box clears on submit', () => {
     expect(wrapper.instance().inputBox.current.value).toBe('');
-  })
+  });
 
 });
