@@ -48,7 +48,7 @@ test('`getSecretWord` runs on App mount', () => {
     getSecretWord: getSecretWordMock,
     success: false,
     guessedWords: [],
-  }
+  };
 
   // set up app component with getSecretWordMock as the getSecretWord prop
   const wrapper = shallow(<UnconnectedApp {...props} />);
